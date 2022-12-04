@@ -1,8 +1,8 @@
 import os
 import numpy as np
-import config
+from .. import config
 from img_utils import get_imgs_from_path
-from GEI import create_GEI
+from .. GEI import create_GEI
 
 def get_training_validation_data():
     train_paths, train_labels, val_paths, val_labels = get_paths_labels()
