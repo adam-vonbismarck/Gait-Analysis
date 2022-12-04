@@ -2,15 +2,10 @@
 This file preprocess the images that are used to train the gait recognition model
 """
 
-import sklearn
-import scipy
-from matplotlib import pyplot as plt
+import os
+import numpy as np
 from skimage.io import imread
 from skimage.io import imsave
-from skimage.transform import resize
-import numpy as np
-import os
-import logging
 
 
 def centre_human():
