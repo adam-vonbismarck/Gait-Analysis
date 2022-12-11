@@ -34,7 +34,10 @@ def extract_human(image):
     cropped_image = image[min_row:max_row, min_col:max_col]
     return cropped_image
 
+def preprocess(images):
+    
 
+'''
 def extract_humans_from_folder(folder_path, save_path):
     """
     Extracts the human silhouettes from a folder of images and saves them to a folder
@@ -54,7 +57,7 @@ def extract_humans_from_folder(folder_path, save_path):
         imsave(save_path + image_list[i], cropped_image)
         # print the progress
         print("Progress: " + str(i) + "/" + str(len(image_list)))
-
+'''
 
 if __name__ == '__main__':
     pass
