@@ -3,18 +3,31 @@ This file preprocess the images that are used to train the gait recognition mode
 """
 
 import os
+from re import L
 import numpy as np
 import matplotlib.pyplot as plt
 from skimage.io import imread
 from skimage.io import imsave
+from scipy.misc import imresize
 
 
 def centre_human(image):
     """Centres human based off of the data from extract_human()"""
-    extracted_width, extracted_height = image.shape
+    extracted_height, extracted_width = image.shape
     sum_white_pixels = np.sum(image == 255)
     pixel_proportions = [(np.sum(image[:, i] == 255) / sum_white_pixels) for i in range(extracted_width)]
-    pass
+    for i in range(extracted_width - 1):
+        pixel_proportions[i+1] += pixel_proportions[i]
+    pixel_proportions = [abs(x - 0.5) for x in pixel_proportions]
+    sorted_proportions = np.argsort(pixel_proportions)
+    pixel_offset = int((extracted_width / 2) - sorted_proportions[0])
+    shifted_image = np.zeros((extracted_height, extracted_width + abs(pixel_offset)))
+    if pixel_offset < 0:
+        shifted_image[:, :extracted_width] = image
+    if pixel_offset >= 0:
+        shifted_image[:, extracted_width:] = image
+
+    return imresize(shifted_image, (210, 70))
 
 
 def extract_human(image):
