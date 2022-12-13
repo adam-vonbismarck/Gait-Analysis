@@ -55,9 +55,6 @@ def create_GEnI(train_imgs, val_imgs):
             final[i] = result / person.shape[0]
         return final
 
-        for person in range(sequence.shape[0]):
-            for frame in range(person.shape[0]):
-
 
     train_data = get_GEnI(train_imgs)
     val_data = get_GEnI(val_imgs)
