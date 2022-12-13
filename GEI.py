@@ -31,13 +31,14 @@ def create_GEnI(train_imgs, val_imgs):
     :param val_imgs: numpy array of validation images for each person
     :return: GEnI for each person
     """
+
     def get_GEnI(sequence):
         """
         This method creates the GEnI for a sequence of images
         :param sequence: sequence of images
         :return: generated GEnI
         """
-        
+
         final = np.zeros((sequence.shape[0], 210, 70))
         for i, person in enumerate(sequence):
             result = np.zeros((210, 70))
@@ -58,13 +59,7 @@ def create_GEnI(train_imgs, val_imgs):
             for frame in range(person.shape[0]):
 
 
-    train_imgs_pre = preprocess(train_imgs)
-    val_imgs_pre = preprocess(val_imgs)
-
-    train_data = np.array((train_imgs_pre.shape[0], train_imgs_pre.shape[1], train_imgs_pre.shape[2]))
-    val_data = np.array((val_imgs_pre.shape[0], val_imgs_pre.shape[1], val_imgs_pre.shape[2]))
-
-    train_data = get_GEnI(train_imgs_pre)
-    val_data = get_GEnI(val_imgs_pre)
+    train_data = get_GEnI(train_imgs)
+    val_data = get_GEnI(val_imgs)
 
     return train_data, val_data
