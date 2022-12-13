@@ -29,8 +29,8 @@ def get_paths_labels():
     :return: training paths, training labels, validation paths, validation labels
     """
     # TODO check that the paths are correct
-    train_dirs = ["nm-01"] #, "nm-02", "nm-03", "nm-04"]
-    val_dirs = ["nm-05"] #, "nm-06"]
+    train_dirs = ["nm-01", "nm-02", "nm-03", "nm-04"]
+    val_dirs = ["nm-05", "nm-06"]
     train_paths = []
     train_labels = []
     val_paths = []
@@ -52,14 +52,4 @@ def get_paths_labels():
                 img_paths = os.listdir(path)
                 val_paths.append(np.array(["%s/%s" % (path, img_path) for img_path in img_paths]))
 
-    train_paths = np.array(train_paths)
-
     return np.array(train_paths), np.array(train_labels), np.array(val_paths), np.array(val_labels)
-
-
-if __name__ == "__main__":
-    train_data, train_labels, val_data, val_labels = get_training_validation_data()
-    # display image in train_data[0] uisng imshow
-    
-    plt.imshow(train_data[2], cmap='gray')
-    plt.show()
