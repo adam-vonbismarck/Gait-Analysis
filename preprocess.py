@@ -2,16 +2,9 @@
 This file preprocess the images that are used to train the gait recognition model
 """
 
-import os
-from re import L
 import numpy as np
-import matplotlib.pyplot as plt
-from skimage.io import imread
-from skimage.io import imsave
 from skimage.transform import resize
-
-PREPROCESSED_WIDTH = 70
-PREPROCESSED_HEIGHT = 210
+import config
 
 
 def centre_human(image):
@@ -30,7 +23,7 @@ def centre_human(image):
     if pixel_offset >= 0:
         shifted_image[:, abs(pixel_offset):] = image
 
-    return resize(shifted_image, (PREPROCESSED_HEIGHT, PREPROCESSED_WIDTH))
+    return resize(shifted_image, (config.Parameters.preprocess_image_height, config.Parameters.preprocess_image_width))
 
 
 def extract_human(image):
@@ -58,36 +51,9 @@ def extract_human(image):
 def preprocess(image):
     """
     Preprocesses the images by extracting the human silhouette and then centering the human.
-    :param images: The images to preprocess
+    :param image: The image to preprocess
     :return: The preprocessed images
     """
     extracted_image = extract_human(image)
     preprocessed_image = centre_human(extracted_image)
     return preprocessed_image
-
-
-'''
-def extract_humans_from_folder(folder_path, save_path):
-    """
-    Extracts the human silhouettes from a folder of images and saves them to a folder
-    :param folder_path: The path to the folder of images
-    :param save_path: The path to the folder to save the images to
-    :return: None
-    """
-    # get the list of images
-    image_list = os.listdir(folder_path)
-    # loop through the images
-    for i in range(len(image_list)):
-        # get the image
-        image = imread(folder_path + image_list[i])
-        # extract the human
-        cropped_image = extract_human(image)
-        # save the image
-        imsave(save_path + image_list[i], cropped_image)
-        # print the progress
-        print("Progress: " + str(i) + "/" + str(len(image_list)))
-'''
-
-if __name__ == '__main__':
-    img = imread('/Users/adamvonbismarck/Downloads/GaitDatasetB-silh/101/nm-01/090/101-nm-01-090-018.png', as_gray=True)
-    img = preprocess(img)

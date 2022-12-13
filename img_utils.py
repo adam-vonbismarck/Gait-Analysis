@@ -1,5 +1,4 @@
 import numpy as np
-from matplotlib import pyplot as plt
 from skimage.io import imread
 from preprocess import preprocess
 
@@ -20,6 +19,7 @@ def get_imgs_from_path(train_paths, val_paths):
         # Import images
         for j, file_path in enumerate(train_paths[i]):
             img = imread(file_path, as_gray=True)
+            # Treat edge case where the image is just black
             if np.sum(img == 255) == 0:
                 continue
             img = preprocess(img)
@@ -33,6 +33,9 @@ def get_imgs_from_path(train_paths, val_paths):
         # Import images
         for j, file_path in enumerate(val_paths[i]):
             img = imread(file_path, as_gray=True)
+            # Treat edge case where the image is just black
+            if np.sum(img == 255) == 0:
+                continue
             img = preprocess(img)
             data_sample[j] = img
 

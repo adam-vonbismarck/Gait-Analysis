@@ -1,5 +1,4 @@
 import numpy as np
-from preprocess import preprocess
 
 
 def create_GEI(train_imgs, val_imgs):
@@ -38,32 +37,23 @@ def create_GEnI(train_imgs, val_imgs):
         :param sequence: sequence of images
         :return: generated GEnI
         """
-
         final = np.zeros((sequence.shape[0], 210, 70))
+
         for i, person in enumerate(sequence):
-            # result = np.zeros((210, 70))
-            # for frame in enumerate(person):
-            #     # for i in range(frame.shape[0]):
-            #     #     for j in range(frame.shape[1]):
-            #     #         pixel_value = frame[i, j]
-            #     #         pixel_probability = pixel_value / np.sum(frame)
-            #     #         entropy = -1 * pixel_probability * np.log(pixel_probability)
-            #     #         result[i, j] += entropy
-            #     pixel_probabilities = frame / np.sum(frame)
-            #     entropy = (-1 * pixel_probabilities) * np.log(pixel_probabilities)
-            #     result += entropy
-            # final[i] = result / person.shape[0]
 
             resultImg = np.sum(np.array(person), axis=0) / 255
+
             one_pixel_probability = resultImg / person.shape[0]
             zero_pixel_probability = (person.shape[0] - resultImg) / person.shape[0]
-            h = -np.nan_to_num(zero_pixel_probability*np.log2(zero_pixel_probability)) - np.nan_to_num(one_pixel_probability*np.log2(one_pixel_probability))
+
+            h = -np.nan_to_num(zero_pixel_probability * np.log2(zero_pixel_probability)) - \
+                np.nan_to_num(one_pixel_probability * np.log2(one_pixel_probability))
+
             h_min = np.min(h)
             h_max = np.max(h)
-            final[i] = (h - h_min) * 255 / (h_max - h_min) 
+            final[i] = (h - h_min) * 255 / (h_max - h_min)
 
         return final
-
 
     train_data = get_GEnI(train_imgs)
     val_data = get_GEnI(val_imgs)
