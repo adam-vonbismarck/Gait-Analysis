@@ -38,19 +38,25 @@ def create_GEnI(train_imgs, val_imgs):
         :return: generated GEnI
         """
         
-        result = np.zeros(sequence.shape)
-        for frame in sequence:
-            # for i in range(frame.shape[0]):
-            #     for j in range(frame.shape[1]):
-            #         pixel_value = frame[i, j]
-            #         pixel_probability = pixel_value / np.sum(frame)
-            #         entropy = -1 * pixel_probability * np.log(pixel_probability)
-            #         result[i, j] += entropy
-            pixel_probabilities = frame / np.sum(frame, axis=0)
-            entropy = -1 * np.sum(pixel_probabilities * np.log(pixel_probabilities), axis=0)
-            result += entropy
-        result /= result.shape[0]
-        return result
+        final = np.zeros((sequence.shape[0], 210, 70))
+        for i, person in enumerate(sequence):
+            result = np.zeros((210, 70))
+            for frame in enumerate(person):
+                # for i in range(frame.shape[0]):
+                #     for j in range(frame.shape[1]):
+                #         pixel_value = frame[i, j]
+                #         pixel_probability = pixel_value / np.sum(frame)
+                #         entropy = -1 * pixel_probability * np.log(pixel_probability)
+                #         result[i, j] += entropy
+                pixel_probabilities = frame / np.sum(frame)
+                entropy = (-1 * pixel_probabilities) * np.log(pixel_probabilities)
+                result += entropy
+            final[i] = result / person.shape[0]
+        return final
+
+        for person in range(sequence.shape[0]):
+            for frame in range(person.shape[0]):
+
 
     train_imgs_pre = preprocess(train_imgs)
     val_imgs_pre = preprocess(val_imgs)

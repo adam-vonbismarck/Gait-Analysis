@@ -54,5 +54,6 @@ def get_paths_labels():
 if __name__ == "__main__":
     train_data, train_labels, val_data, val_labels = get_training_validation_data()
     # display image in train_data[0] uisng imshow
+    
     plt.imshow(train_data[0], cmap='gray')
     plt.show()
