@@ -37,6 +37,7 @@ def create_GEnI(train_imgs, val_imgs):
         :param sequence: sequence of images
         :return: generated GEnI
         """
+        
         result = np.zeros(sequence.shape)
         for frame in sequence:
             # for i in range(frame.shape[0]):
