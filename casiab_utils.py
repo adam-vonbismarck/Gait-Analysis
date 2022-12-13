@@ -52,4 +52,5 @@ def get_paths_labels():
                 img_paths = os.listdir(path)
                 val_paths.append(np.array(["%s/%s" % (path, img_path) for img_path in img_paths]))
 
-    return np.array(train_paths), np.array(train_labels), np.array(val_paths), np.array(val_labels)
+    return np.array(train_paths, dtype=object),\
+        np.array(train_labels, dtype=object), np.array(val_paths, dtype=object), np.array(val_labels, dtype=object)
