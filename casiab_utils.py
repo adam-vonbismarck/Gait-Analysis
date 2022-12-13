@@ -14,7 +14,7 @@ def get_training_validation_data(useGEnI=False):
     """
     train_paths, train_labels, val_paths, val_labels = get_paths_labels()
     train_imgs, val_imgs = get_imgs_from_path(train_paths, val_paths)
-    
+
     if useGEnI:
         train_data, val_data = create_GEnI(train_imgs, val_imgs)
     else:
@@ -52,5 +52,5 @@ def get_paths_labels():
                 img_paths = os.listdir(path)
                 val_paths.append(np.array(["%s/%s" % (path, img_path) for img_path in img_paths]))
 
-    return np.array(train_paths, dtype=object),\
+    return np.array(train_paths, dtype=object), \
         np.array(train_labels, dtype=object), np.array(val_paths, dtype=object), np.array(val_labels, dtype=object)

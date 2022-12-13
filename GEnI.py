@@ -12,25 +12,28 @@ def create_GEnI(train_imgs, val_imgs):
 
     def get_GEnI(sequence):
         """
-        This method creates the GEnI for a sequence of images
-        :param sequence: sequence of images
-        :return: generated GEnI
-        """
+    This method creates the GEnI for a sequence of images
+    :param sequence: sequence of images
+    :return: generated GEnI
+    """
+
         final = np.zeros((sequence.shape[0], config.Parameters.preprocess_image_height,
-                          config.Parameters.preprocess_image_width))
+                                  config.Parameters.preprocess_image_width))
 
         for i, person in enumerate(sequence):
-            result_image = np.sum(np.array(person), axis=0) / 255
+            number_images = person.shape[0]
+            white_pixel_count_by_pixel = np.sum(np.array(person), axis=0) / 255
+            probability_white_pixel = white_pixel_count_by_pixel / number_images
+            probability_black_pixel = (number_images - white_pixel_count_by_pixel) / number_images
 
-            one_pixel_probability = result_image / person.shape[0]
-            zero_pixel_probability = (person.shape[0] - result_image) / person.shape[0]
-
-            h = -np.nan_to_num(zero_pixel_probability * np.log2(zero_pixel_probability)) - \
-                np.nan_to_num(one_pixel_probability * np.log2(one_pixel_probability))
-
-            h_min = np.min(h)
-            h_max = np.max(h)
-            final[i] = (h - h_min) * 255 / (h_max - h_min)
+            entropy_white_component = - (probability_white_pixel * np.log(probability_white_pixel,
+                                                                          where=probability_white_pixel > 0))
+            entropy_black_component = - (probability_black_pixel * np.log(probability_black_pixel,
+                                                                          where=probability_black_pixel > 0))
+            total_entropy = entropy_white_component + entropy_black_component
+            entropy_min = np.min(total_entropy)
+            entropy_max = np.max(total_entropy)
+            final[i] = ((total_entropy - entropy_min) * 255) / (entropy_max - entropy_min)
 
         return final
 
