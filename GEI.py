@@ -8,11 +8,42 @@ def create_GEI(train_imgs, val_imgs):
     train_data = np.array((train_imgs_pre.shape[0], train_imgs_pre.shape[1], train_imgs_pre.shape[2]))
     val_data = np.array((val_imgs_pre.shape[0], val_imgs_pre.shape[1], val_imgs_pre.shape[2]))
 
-    for i in train_imgs_pre.shape[0]:
-        train_data[i] = np.mean(train_imgs_pre[i], axis=0)
+    # for i in train_imgs_pre.shape[0]:
+    #     train_data[i] = np.mean(train_imgs_pre[i], axis=0)
 
-    for i in val_imgs_pre.shape[0]:
-        val_data[i] = np.mean(val_imgs_pre[i], axis=0)
+    # for i in val_imgs_pre.shape[0]:
+    #     val_data[i] = np.mean(val_imgs_pre[i], axis=0)
+
+    # can be replaced by i think:
+    train_data = np.mean(train_imgs_pre, axis=0)
+    val_data = np.mean(val_imgs_pre, axis=0)
+
+    return train_data, val_data
+
+def create_GEnI(train_imgs, val_imgs):
+    def get_GEnI(sequence):
+        result = np.zeros(sequence.shape)
+        for frame in sequence:
+            # for i in range(frame.shape[0]):
+            #     for j in range(frame.shape[1]):
+            #         pixel_value = frame[i, j]
+            #         pixel_probability = pixel_value / np.sum(frame)
+            #         entropy = -1 * pixel_probability * np.log(pixel_probability)
+            #         result[i, j] += entropy
+            pixel_probabilities = frame / np.sum(frame, axis=0)
+            entropy = -1 * np.sum(pixel_probabilities * np.log(pixel_probabilities), axis=0)
+            result += entropy
+        result /= result.shape[0]
+        return result
+
+    train_imgs_pre = preprocess(train_imgs)
+    val_imgs_pre = preprocess(val_imgs)
+
+    train_data = np.array((train_imgs_pre.shape[0], train_imgs_pre.shape[1], train_imgs_pre.shape[2]))
+    val_data = np.array((val_imgs_pre.shape[0], val_imgs_pre.shape[1], val_imgs_pre.shape[2]))
+
+    train_data = get_GEnI(train_imgs_pre)
+    val_data = get_GEnI(val_imgs_pre)
 
     return train_data, val_data
 
