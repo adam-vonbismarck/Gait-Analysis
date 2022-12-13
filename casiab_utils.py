@@ -2,7 +2,7 @@ import os
 import numpy as np
 import config
 from img_utils import get_imgs_from_path
-from GEI import create_GEI
+from GEI import create_GEI, create_GEnI
 from matplotlib import pyplot as plt
 
 
@@ -13,7 +13,7 @@ def get_training_validation_data():
     """
     train_paths, train_labels, val_paths, val_labels = get_paths_labels()
     train_imgs, val_imgs = get_imgs_from_path(train_paths, val_paths)
-    train_data, val_data = create_GEI(train_imgs, val_imgs)
+    train_data, val_data = create_GEnI(train_imgs, val_imgs)
 
     return train_data, train_labels, val_data, val_labels
 

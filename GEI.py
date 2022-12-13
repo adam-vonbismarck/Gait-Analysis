@@ -31,33 +31,36 @@ def create_GEnI(train_imgs, val_imgs):
     :param val_imgs: numpy array of validation images for each person
     :return: GEnI for each person
     """
+
     def get_GEnI(sequence):
         """
         This method creates the GEnI for a sequence of images
         :param sequence: sequence of images
         :return: generated GEnI
         """
-        result = np.zeros(sequence.shape)
-        for frame in sequence:
-            # for i in range(frame.shape[0]):
-            #     for j in range(frame.shape[1]):
-            #         pixel_value = frame[i, j]
-            #         pixel_probability = pixel_value / np.sum(frame)
-            #         entropy = -1 * pixel_probability * np.log(pixel_probability)
-            #         result[i, j] += entropy
-            pixel_probabilities = frame / np.sum(frame, axis=0)
-            entropy = -1 * np.sum(pixel_probabilities * np.log(pixel_probabilities), axis=0)
-            result += entropy
-        result /= result.shape[0]
+        result = np.zeros((sequence.shape[0]), dtype=object)
+        for p in range(sequence.shape[0]):
+            for i in range(sequence[p].shape[0]):
+                # for i in range(frame.shape[0]):
+                #     for j in range(frame.shape[1]):
+                #         pixel_value = frame[i, j]
+                #         pixel_probability = pixel_value / np.sum(frame)
+                #         entropy = -1 * pixel_probability * np.log(pixel_probability)
+                #         result[i, j] += entropy
+                for a in range(sequence[p, i].shape[0]):
+                    for b in range(sequence[p, i].shape[1]):
+                        pixel_value = sequence[p, i][a, b]
+                        pixel_probability = pixel_value / np.sum(sequence[p, i])
+                        entropy = -1 * pixel_probability * np.log(pixel_probability)
+                        result[a, b] += entropy
+                # pixel_probabilities = sequence[p][i] / np.sum(sequence[p][i], axis=None)
+                # entropy = -1 * np.sum(pixel_probabilities * np.log(pixel_probabilities), axis=None)
+                # result[p] += entropy
+            print(result)
+            result[p] /= result[p].shape[0]
         return result
 
-    train_imgs_pre = preprocess(train_imgs)
-    val_imgs_pre = preprocess(val_imgs)
-
-    train_data = np.array((train_imgs_pre.shape[0], train_imgs_pre.shape[1], train_imgs_pre.shape[2]))
-    val_data = np.array((val_imgs_pre.shape[0], val_imgs_pre.shape[1], val_imgs_pre.shape[2]))
-
-    train_data = get_GEnI(train_imgs_pre)
-    val_data = get_GEnI(val_imgs_pre)
+    train_data = get_GEnI(train_imgs)
+    val_data = get_GEnI(val_imgs)
 
     return train_data, val_data
