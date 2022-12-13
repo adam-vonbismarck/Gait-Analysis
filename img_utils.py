@@ -5,7 +5,12 @@ from preprocess import preprocess
 
 
 def get_imgs_from_path(train_paths, val_paths):
-
+    """
+    This method reads the images from the paths and returns the images
+    :param train_paths: paths to the training images
+    :param val_paths: paths to the validation images
+    :return: array of images for each person and each validation image
+    """
     image_array = np.zeros((train_paths.shape[0]), dtype=object)
     val_array = np.zeros((val_paths.shape[0]), dtype=object)
 

@@ -3,6 +3,12 @@ from preprocess import preprocess
 
 
 def create_GEI(train_imgs, val_imgs):
+    """
+    This method creates the GEI for each person
+    :param train_imgs: train images for each person
+    :param val_imgs: validation images for each person
+    :return: GEI for each person
+    """
     train_imgs_pre = train_imgs
     val_imgs_pre = val_imgs
 
@@ -15,15 +21,22 @@ def create_GEI(train_imgs, val_imgs):
     for i in range(val_imgs_pre.shape[0]):
         val_data[i] = np.mean(val_imgs_pre[i], axis=0)
 
-    # can be replaced by i think:
-    # train_data = np.mean(train_imgs_pre, axis=0)
-    # val_data = np.mean(val_imgs_pre, axis=0)
-
     return train_data, val_data
 
 
 def create_GEnI(train_imgs, val_imgs):
+    """
+    This method creates the GEnI for each person
+    :param train_imgs: numpy array of training images for each person
+    :param val_imgs: numpy array of validation images for each person
+    :return: GEnI for each person
+    """
     def get_GEnI(sequence):
+        """
+        This method creates the GEnI for a sequence of images
+        :param sequence: sequence of images
+        :return: generated GEnI
+        """
         result = np.zeros(sequence.shape)
         for frame in sequence:
             # for i in range(frame.shape[0]):

@@ -7,6 +7,10 @@ from matplotlib import pyplot as plt
 
 
 def get_training_validation_data():
+    """
+    This method runs the preprocessing steps and returns the training and validation data
+    :return: training data, training labels, validation data, validation labels
+    """
     train_paths, train_labels, val_paths, val_labels = get_paths_labels()
     train_imgs, val_imgs = get_imgs_from_path(train_paths, val_paths)
     train_data, val_data = create_GEI(train_imgs, val_imgs)
@@ -15,6 +19,10 @@ def get_training_validation_data():
 
 
 def get_paths_labels():
+    """
+    This method returns the paths and labels for the training and validation data
+    :return: training paths, training labels, validation paths, validation labels
+    """
     train_dirs = ["nm-01"] #, "nm-02", "nm-03", "nm-04"]
     val_dirs = ["nm-05"] #, "nm-06"]
     train_paths = []
