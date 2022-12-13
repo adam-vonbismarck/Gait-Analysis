@@ -1,4 +1,6 @@
 import numpy as np
+import config
+
 
 def create_GEnI(train_imgs, val_imgs):
     """
@@ -14,14 +16,14 @@ def create_GEnI(train_imgs, val_imgs):
         :param sequence: sequence of images
         :return: generated GEnI
         """
-        final = np.zeros((sequence.shape[0], 210, 70))
+        final = np.zeros((sequence.shape[0], config.Parameters.preprocess_image_height,
+                          config.Parameters.preprocess_image_width))
 
         for i, person in enumerate(sequence):
+            result_image = np.sum(np.array(person), axis=0) / 255
 
-            resultImg = np.sum(np.array(person), axis=0) / 255
-
-            one_pixel_probability = resultImg / person.shape[0]
-            zero_pixel_probability = (person.shape[0] - resultImg) / person.shape[0]
+            one_pixel_probability = result_image / person.shape[0]
+            zero_pixel_probability = (person.shape[0] - result_image) / person.shape[0]
 
             h = -np.nan_to_num(zero_pixel_probability * np.log2(zero_pixel_probability)) - \
                 np.nan_to_num(one_pixel_probability * np.log2(one_pixel_probability))
