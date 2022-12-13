@@ -28,7 +28,7 @@ def centre_human(image):
     if pixel_offset < 0:
         shifted_image[:, :extracted_width] = image
     if pixel_offset >= 0:
-        shifted_image[:, extracted_width:] = image
+        shifted_image[:, abs(pixel_offset):] = image
 
     return resize(shifted_image, (PREPROCESSED_HEIGHT, PREPROCESSED_WIDTH))
 
@@ -44,6 +44,7 @@ def extract_human(image):
     """
     # find the white pixels
     white_pixels = np.where(image == 255)
+
     # find the min and max of the white pixels
     min_row = np.min(white_pixels[0])
     max_row = np.max(white_pixels[0])
@@ -51,23 +52,18 @@ def extract_human(image):
     max_col = np.max(white_pixels[1])
     # crop the image
     cropped_image = image[min_row:max_row, min_col:max_col]
-    plt.imshow(cropped_image)
-    plt.show()
     return cropped_image
 
 
-def preprocess(images):
+def preprocess(image):
     """
     Preprocesses the images by extracting the human silhouette and then centering the human.
     :param images: The images to preprocess
     :return: The preprocessed images
     """
-    preprocessed_images = np.zeros((images.shape[0], PREPROCESSED_HEIGHT, PREPROCESSED_WIDTH))
-    for i, image in enumerate(images):
-        extracted_image = extract_human(image)
-        preprocessed_image = centre_human(extracted_image)
-        preprocessed_images[i] = preprocessed_image
-    return preprocessed_images
+    extracted_image = extract_human(image)
+    preprocessed_image = centre_human(extracted_image)
+    return preprocessed_image
 
 
 '''
@@ -93,4 +89,5 @@ def extract_humans_from_folder(folder_path, save_path):
 '''
 
 if __name__ == '__main__':
-    pass
+    img = imread('/Users/adamvonbismarck/Downloads/GaitDatasetB-silh/101/nm-01/090/101-nm-01-090-018.png', as_gray=True)
+    img = preprocess(img)

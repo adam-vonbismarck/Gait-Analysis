@@ -1,24 +1,26 @@
 import numpy as np
 from preprocess import preprocess
 
+
 def create_GEI(train_imgs, val_imgs):
-    train_imgs_pre = preprocess(train_imgs)
-    val_imgs_pre = preprocess(val_imgs)
+    train_imgs_pre = train_imgs
+    val_imgs_pre = val_imgs
 
-    train_data = np.array((train_imgs_pre.shape[0], train_imgs_pre.shape[1], train_imgs_pre.shape[2]))
-    val_data = np.array((val_imgs_pre.shape[0], val_imgs_pre.shape[1], val_imgs_pre.shape[2]))
+    train_data = np.zeros((train_imgs_pre.shape[0]), dtype=object)
+    val_data = np.zeros((val_imgs_pre.shape[0]), dtype=object)
 
-    # for i in train_imgs_pre.shape[0]:
-    #     train_data[i] = np.mean(train_imgs_pre[i], axis=0)
+    for i in range(train_imgs_pre.shape[0]):
+        train_data[i] = np.mean(train_imgs_pre[i], axis=0)
 
-    # for i in val_imgs_pre.shape[0]:
-    #     val_data[i] = np.mean(val_imgs_pre[i], axis=0)
+    for i in range(val_imgs_pre.shape[0]):
+        val_data[i] = np.mean(val_imgs_pre[i], axis=0)
 
     # can be replaced by i think:
-    train_data = np.mean(train_imgs_pre, axis=0)
-    val_data = np.mean(val_imgs_pre, axis=0)
+    # train_data = np.mean(train_imgs_pre, axis=0)
+    # val_data = np.mean(val_imgs_pre, axis=0)
 
     return train_data, val_data
+
 
 def create_GEnI(train_imgs, val_imgs):
     def get_GEnI(sequence):
@@ -46,5 +48,3 @@ def create_GEnI(train_imgs, val_imgs):
     val_data = get_GEnI(val_imgs_pre)
 
     return train_data, val_data
-
-

@@ -1,23 +1,36 @@
 import numpy as np
+from matplotlib import pyplot as plt
 from skimage.io import imread
+from preprocess import preprocess
+
 
 def get_imgs_from_path(train_paths, val_paths):
-    train_imgs = np.array(train_paths.shape)
-    val_imgs = np.array(val_paths.shape)
-    print(len(train_paths))
-    train_imgs = np.empty(len(train_paths), dtype=object)
-    val_imgs = np.empty(len(val_paths), dtype=object)
-    # for i in range(train_imgs.shape[0]):
-    #     for j in range(train_imgs.shape[1]):
-    #         train_imgs[i, j] = imread(train_paths[i, j], as_grey=True)
-    for i in range(len(train_paths)):
-        train_imgs[i] = imread(train_paths[i], as_gray=True)
 
-    # for i in range(val_imgs.shape[0]):
-    #     for j in range(val_imgs.shape[1]):
-    #         val_imgs[i, j] = imread(val_paths[i, j], as_grey=True)
+    image_array = np.zeros((train_paths.shape[0]), dtype=object)
+    val_array = np.zeros((val_paths.shape[0]), dtype=object)
 
-    for i in range(val_imgs.size()):
-        val_imgs[i] = imread(val_paths[i], as_gray=True)
+    for i in range(train_paths.shape[0]):
 
-    return train_imgs, val_imgs
+        data_sample = np.zeros((train_paths[i].size, 210, 70))
+        # Import images
+        for j, file_path in enumerate(train_paths[i]):
+            img = imread(file_path, as_gray=True)
+            if np.sum(img == 255) == 0:
+                continue
+            img = preprocess(img)
+            data_sample[j] = img
+
+        image_array[i] = data_sample
+
+    for i in range(val_paths.shape[0]):
+
+        data_sample = np.zeros((val_paths[i].size, 210, 70))
+        # Import images
+        for j, file_path in enumerate(val_paths[i]):
+            img = imread(file_path, as_gray=True)
+            img = preprocess(img)
+            data_sample[j] = img
+
+        val_array[i] = data_sample
+
+    return image_array, val_array
