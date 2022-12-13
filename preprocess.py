@@ -8,7 +8,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 from skimage.io import imread
 from skimage.io import imsave
-from scipy.misc import imresize
+from skimage.transform import resize
+
+PREPROCESSED_WIDTH = 70
+PREPROCESSED_HEIGHT = 210
 
 
 def centre_human(image):
@@ -17,7 +20,7 @@ def centre_human(image):
     sum_white_pixels = np.sum(image == 255)
     pixel_proportions = [(np.sum(image[:, i] == 255) / sum_white_pixels) for i in range(extracted_width)]
     for i in range(extracted_width - 1):
-        pixel_proportions[i+1] += pixel_proportions[i]
+        pixel_proportions[i + 1] += pixel_proportions[i]
     pixel_proportions = [abs(x - 0.5) for x in pixel_proportions]
     sorted_proportions = np.argsort(pixel_proportions)
     pixel_offset = int((extracted_width / 2) - sorted_proportions[0])
@@ -27,7 +30,7 @@ def centre_human(image):
     if pixel_offset >= 0:
         shifted_image[:, extracted_width:] = image
 
-    return imresize(shifted_image, (210, 70))
+    return resize(shifted_image, (PREPROCESSED_HEIGHT, PREPROCESSED_WIDTH))
 
 
 def extract_human(image):
@@ -52,11 +55,20 @@ def extract_human(image):
     plt.show()
     return cropped_image
 
+
 def preprocess(images):
-    for image in images:
-        image = centre_human(extract_human(image))
-    return images
-    
+    """
+    Preprocesses the images by extracting the human silhouette and then centering the human.
+    :param images: The images to preprocess
+    :return: The preprocessed images
+    """
+    preprocessed_images = np.zeros((images.shape[0], PREPROCESSED_HEIGHT, PREPROCESSED_WIDTH))
+    for i, image in enumerate(images):
+        extracted_image = extract_human(image)
+        preprocessed_image = centre_human(extracted_image)
+        preprocessed_images[i] = preprocessed_image
+    return preprocessed_images
+
 
 '''
 def extract_humans_from_folder(folder_path, save_path):

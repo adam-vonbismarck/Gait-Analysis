@@ -2,7 +2,6 @@ import numpy as np
 from preprocess import preprocess
 
 def create_GEI(train_imgs, val_imgs):
-    #TODO: prepocess images to get centered figures
     train_imgs_pre = preprocess(train_imgs)
     val_imgs_pre = preprocess(val_imgs)
 
@@ -16,3 +15,5 @@ def create_GEI(train_imgs, val_imgs):
         val_data[i] = np.mean(val_imgs_pre[i], axis=0)
 
     return train_data, val_data
+
+
