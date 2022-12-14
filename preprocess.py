@@ -85,13 +85,14 @@ def process_frames(input_frames):
 def remove_artifacts(messy_sillouhettes):
     clean_sillouhettes = np.zeros((messy_sillouhettes.shape[0], 1080, 1180))
     for i in range(messy_sillouhettes.shape[0]):
-        erosion_size = 2
+        erosion_size = 3
         kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (2 * erosion_size + 1, 2 * erosion_size + 1),
                                        (erosion_size, erosion_size))
         clean_sillouhettes[i] = cv2.erode(messy_sillouhettes[i], kernel)
 
-    plt.imshow(clean_sillouhettes[60], cmap='gray')
-    plt.show()
+    for img in clean_sillouhettes[30::5,:,:]:
+        plt.imshow(img, cmap='gray')
+        plt.show()
     return clean_sillouhettes
 
 
@@ -112,5 +113,7 @@ def preprocess(image):
 if __name__ == '__main__':
     # background_frames = video_to_frames('IMG_2276.MOV')
     # background_frame = background_frames[68][:, 570:1750]
+    # plt.imshow(background_frame, cmap='gray')
+    # plt.show()
     frames = video_to_frames('IMG_2346.MOV')
     process_frames(frames)
