@@ -4,7 +4,7 @@ from sklearn.ensemble import RandomForestClassifier
 import numpy as np
 
 
-def run_GEI(train_x, train_y, val_x, val_y):
+def run_GEI(train_x, train_y, val_x, val_y, verbose):
     """
     This method runs the GEI model and returns the accuracy
     :return: the accuracy of the GEI model
@@ -18,10 +18,13 @@ def run_GEI(train_x, train_y, val_x, val_y):
                                    max_features=100)
     model.fit(train_x, train_y)
     p_y = model.predict(val_x)
+    if verbose:
+        for i, p in enumerate(p_y):
+            print("Predicted: %s, Actual: %s" % (p, val_y[i]))
     return np.mean(p_y == val_y)
 
 
-def run_GEnI(train_x, train_y, val_x, val_y):
+def run_GEnI(train_x, train_y, val_x, val_y, verbose):
     """
     This method runs the GEnI model and returns the accuracy of the model
     :return: the accuracy of the GEnI model
@@ -35,27 +38,31 @@ def run_GEnI(train_x, train_y, val_x, val_y):
                                    max_features=100)
     model.fit(train_x, train_y)
     p_y = model.predict(val_x)
+
+    if verbose:
+        for i, p in enumerate(p_y):
+            print("Predicted: %s, Actual: %s" % (p, val_y[i]))
     return np.mean(p_y == val_y)
 
 
-def run_model(useCasiaB=True):
+def run_model(useCasiaB=True, useSpecial=False, verbose=False):
     """
     This method runs the GEI and GEnI models and prints the accuracy of each model
     """
     if useCasiaB:
         train_x, train_y, val_x, val_y = get_casia_training_validation_data()
-        GEI_accuracy = run_GEI(train_x, train_y, val_x, val_y)
+        GEI_accuracy = run_GEI(train_x, train_y, val_x, val_y, verbose)
         train_x, train_y, val_x, val_y = get_casia_training_validation_data(useGEnI=True)
-        GEnI_accuracy = run_GEnI(train_x, train_y, val_x, val_y)
+        GEnI_accuracy = run_GEnI(train_x, train_y, val_x, val_y, verbose)
     else:
-        train_x, train_y, val_x, val_y = get_vid_training_validation_data()
-        GEI_accuracy = run_GEI(train_x, train_y, val_x, val_y)
-        train_x, train_y, val_x, val_y = get_vid_training_validation_data(useGEnI=True)
-        GEnI_accuracy = run_GEnI(train_x, train_y, val_x, val_y)
+        train_x, train_y, val_x, val_y = get_vid_training_validation_data(useSpecial=useSpecial)
+        GEI_accuracy = run_GEI(train_x, train_y, val_x, val_y, verbose)
+        train_x, train_y, val_x, val_y = get_vid_training_validation_data(useGEnI=True, useSpecial=useSpecial)
+        GEnI_accuracy = run_GEnI(train_x, train_y, val_x, val_y, verbose)
     
     print("GEI accuracy: %.3f" % GEI_accuracy)
     print("GEnI accuracy: %.3f" % GEnI_accuracy)
 
 
 if __name__ == '__main__':
-    run_model(useCasiaB=False)
+    run_model()
