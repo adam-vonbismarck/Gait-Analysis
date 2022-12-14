@@ -14,7 +14,7 @@ def run_GEI(train_x, train_y, val_x, val_y, verbose):
     train_x = np.array([x.flatten() for x in train_x])
     val_x = np.array([x.flatten() for x in val_x])
 
-    model = RandomForestClassifier(n_estimators=500, n_jobs=-1, random_state=2016, verbose=0, max_depth=100,
+    model = RandomForestClassifier(n_estimators=500, n_jobs=-1, random_state=2016, verbose=int(verbose), max_depth=100,
                                    max_features=100)
     model.fit(train_x, train_y)
     p_y = model.predict(val_x)
@@ -34,7 +34,7 @@ def run_GEnI(train_x, train_y, val_x, val_y, verbose):
     train_x = np.array([x.flatten() for x in train_x])
     val_x = np.array([x.flatten() for x in val_x])
 
-    model = RandomForestClassifier(n_estimators=500, n_jobs=-1, random_state=2016, verbose=0, max_depth=100,
+    model = RandomForestClassifier(n_estimators=500, n_jobs=-1, random_state=2016, verbose=int(verbose), max_depth=100,
                                    max_features=100)
     model.fit(train_x, train_y)
     p_y = model.predict(val_x)
