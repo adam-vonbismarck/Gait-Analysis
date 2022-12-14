@@ -5,6 +5,7 @@ This file preprocess the images that are used to train the gait recognition mode
 import numpy as np
 from skimage.transform import resize
 import config
+import cv2
 
 
 def centre_human(image):
@@ -47,6 +48,25 @@ def extract_human(image):
     cropped_image = image[min_row:max_row, min_col:max_col]
     return cropped_image
 
+def preprocess_video(video_filepath):
+    video = cv2.VideoCapture(video_filepath)
+    total_frames = int(video.get(cv2.CAP_PROP_FRAME_COUNT))
+    scene_height = int(video.get(cv2.CAP_PROP_FRAME_HEIGHT))
+    scene_width = int(video.get(cv2.CAP_PROP_FRAME_WIDTH))
+
+    frame_count = 0
+    i = 0
+    was_read = True
+    frames = np.zeros((int(total_frames/3), scene_height, scene_width))
+
+    while(frame_count < total_frames and was_read):
+        was_read, frame = video.read()
+        frames[i] = frame
+        i += 1
+        frame_count += 3
+    return frames
+
+
 
 def preprocess(image):
     """
@@ -57,3 +77,6 @@ def preprocess(image):
     extracted_image = extract_human(image)
     preprocessed_image = centre_human(extracted_image)
     return preprocessed_image
+
+if __name__ == '__main__':
+    preprocess_video('IMG_2276.MOV')
