@@ -1,7 +1,7 @@
 import numpy as np
 from skimage.io import imread
-from preprocess import preprocess
-
+import cv2 as cv
+from utils.preprocess import preprocess
 
 def get_imgs_from_path(train_paths, val_paths):
     """
@@ -42,3 +42,23 @@ def get_imgs_from_path(train_paths, val_paths):
         val_array[i] = data_sample
 
     return image_array, val_array
+
+def process_frames(input_frames):
+    output_frames = np.zeros((input_frames.shape[0], 1080, 1180))
+    for i in range(input_frames.shape[0]):
+        new_frame = input_frames[i][:, 570:1750]
+        black_frames = new_frame > 130
+        white_frames = new_frame <= 130
+        new_frame[black_frames] = 0
+        new_frame[white_frames] = 255
+        output_frames[i] = new_frame
+    return remove_artifacts(output_frames)
+
+def remove_artifacts(messy_sillouhettes):
+    clean_sillouhettes = np.zeros((messy_sillouhettes.shape[0], 1080, 1180))
+    for i in range(messy_sillouhettes.shape[0]):
+        erosion_size = 3
+        kernel = cv.getStructuringElement(cv.MORPH_ELLIPSE, (2 * erosion_size + 1, 2 * erosion_size + 1),
+                                       (erosion_size, erosion_size))
+        clean_sillouhettes[i] = cv.erode(messy_sillouhettes[i], kernel)
+    return clean_sillouhettes

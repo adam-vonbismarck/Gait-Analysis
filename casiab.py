@@ -1,13 +1,11 @@
 import os
 import numpy as np
 import config
-from img_utils import get_imgs_from_path
+from utils.img_utils import get_imgs_from_path
 from GEI import create_GEI
 from GEnI import create_GEnI
-from matplotlib import pyplot as plt
 
-
-def get_training_validation_data(useGEnI=False):
+def get_casia_training_validation_data(useGEnI=False):
     """
     This method runs the preprocessing steps and returns the training and validation data
     :return: training data, training labels, validation data, validation labels
