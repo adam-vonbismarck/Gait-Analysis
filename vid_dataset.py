@@ -4,6 +4,7 @@ import config
 from utils.vid_utils import get_imgs_from_vid_path
 from GEI import create_GEI
 from GEnI import create_GEnI
+from matplotlib import pyplot as plt
 
 def get_vid_training_validation_data(useGEnI=False, useSpecial=False):
     """
@@ -52,3 +53,11 @@ def get_paths_labels(useSpecial):
                 val_paths.append(path)
 
     return np.array(train_paths), np.array(train_labels), np.array(val_paths), np.array(val_labels)
+
+
+if __name__ == "__main__":
+    train_data, train_labels, val_data, val_labels = get_vid_training_validation_data(useGEnI=True, useSpecial=True)
+    for i, lab in enumerate(val_labels):
+        if lab == "04":
+            plt.imshow(val_data[i], cmap="gray")
+            plt.show()

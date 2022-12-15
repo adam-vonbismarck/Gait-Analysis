@@ -11,14 +11,16 @@
 **Computer vision final project for team "Wallace and Gromit"**
 POSTER LINK: https://docs.google.com/presentation/d/1ziSVpj7NRCUMtv_hRPUFRiXd8TEyiPkR8Snf9uUYz_U/edit?usp=sharing
 
-**Code structure**
+## Prerequisites
+- Download CASIA dataset (this can be trimmed to only include relevent images using filescript.py)
+- Include path for downloaded dataset in config.py
+## How to run code
+Run the following command to run the model
 
-When the classifier is tested, the code is run by first using the methods in preprocess.py. These methods 
-extract the human and center them in the middle of the frame. This is done based on the assumption that the
-model is only fed black and white images. The image is then cropped to a size defined in the config file.
-The images are fed through this after they have been extracted and turned into a numpy array of images for each
-person. The images are then fed through either the gait energy image or the gait entropy image methods. These
-methods are defined in the GEI.py file. The images are then fed through the classifier which is defined in the
-classifier.py file.
+    python main.py
 
-**Usage**
+By default, this will use the CASIA dataset with minimal information printed in the terminal.
+
+Several parameters can be added to the run_model function. You can set **useCasiaB** to false to use our custom dataset. You can set **useSpecial** to true to test with videos of coats (note that this will not do anything when using the CASIA dataset). You can also set **verbose** to True which wil print verbose outputs from the random forest classifier as well as print a detailed comparison of predicted labels and actual labels.
+## Known bugs
+On some architectures, the video reading CV2 functionality will not work as expected and cause an error.

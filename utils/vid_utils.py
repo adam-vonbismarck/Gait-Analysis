@@ -11,14 +11,13 @@ def video_to_frames(video_filepath):
 
     frames = np.zeros((int(total_frames / 3), scene_height, scene_width))
     i = 0
-    was_read = True
 
     while (i < total_frames - 1):
         was_read, frame = video.read()
         if not was_read:
             break
-        gray_frame = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
         if ((i % 3) == 0):
+            gray_frame = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
             frames[int(i/3)] = gray_frame
         i += 1
     return frames
@@ -38,7 +37,7 @@ def get_imgs_from_vid_path(train_paths, val_paths):
                 continue
             img = preprocess(img)
             data_sample[j] = img
-            
+
         image_array[i] = data_sample
 
     for i in range(val_paths.shape[0]):
